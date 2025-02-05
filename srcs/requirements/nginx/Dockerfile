@@ -1,10 +1,12 @@
-FROM    debian:bullseye
+FROM debian:bullseye
 
-RUN apt-get -y update && apt-get install -y nginx openssl
+RUN apt -y update && apt install -y nginx openssl
+
+COPY nginx.conf /etc/nginx/nginx.conf
 
 COPY nginx.sh /nginx.sh
 
-RUN chmod +x /nginx
+RUN chmod +x /nginx.sh
 
 # EXPOSE 443
 

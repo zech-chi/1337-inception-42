@@ -1,3 +1,4 @@
+#!/bin/sh
 echo "create the ssl directory ..."
 mkdir -p /etc/nginx/ssl
 
