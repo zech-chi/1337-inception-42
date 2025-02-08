@@ -2,15 +2,58 @@ services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx
-    image: nginx:zech
+    image: nginx:zech-chi
     ports:
       - "8080:443"
     restart: always
-    # networks:
-    #   - inception_net
-    # depends_on:
-    #   - wordpress
-    #   - mariadb
-  # wordpress:
+    networks:
+      - inception_net
+    volumes:
+      - wordpress_volume:/var/www/html
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    image: mariadb:zech-chi
+    restart: always
+    expose:
+      - '3306'
+    env_file:
+      - .env
+    networks:
+      - inception_net
+    depends_on:
+      - nginx
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress
+    image: wordpress:zech-chi
+    env_file:
+      - .env
+    restart: always
+    expose:
+      - '9000'
+    networks:
+      - inception_net
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress_volume:/var/www/html
 
-  # mariadb:
+networks:
+  inception_net:
+    driver: bridge
+
+
+volumes:
+  mariadb_db:
+    driver: local
+    driver_opts:
+        device: /home/zech-chi/goinfre/mariadb_volume
+        type: none
+        o: bind
+  wordpress_volume:
+    driver: local
+    driver_opts: 
+      device: /home/zech-chi/goinfre/wordpress_volume
+      type: none
+      o: bind
