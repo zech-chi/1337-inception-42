@@ -1,5 +1,5 @@
-WP_VOLUME_PATH = '/home/zech-chi/goinfre/wordpress_volume'
-MARIADB_VOLUME_PATH = '/home/zech-chi/goinfre/mariadb_volume'
+WP_VOLUME_PATH = '/tmp/inception_volumes/wordpress_volume15'
+MARIADB_VOLUME_PATH = '/tmp/inception_volumes/mariadb_volume15'
 
 
 all: up
@@ -16,6 +16,8 @@ start:
 	@docker-compose -f srcs/docker-compose.yml start
 
 down:
+	@rm -rf ${WP_VOLUME_PATH}
+	@rm -rf ${MARIADB_VOLUME_PATH}
 	@docker-compose -f srcs/docker-compose.yml down
 
 stop:

@@ -13,11 +13,12 @@ echo "Password      : $SQL_PASSWORD"
 echo "Root User     : $SQL_ROOT"
 echo "Root Password : $SQL_ROOT_PASSWORD"
 
-# Ensure correct ownership of MySQL directory
 chown -R mysql:mysql /var/lib/mysql
 chmod 755 /var/lib/mysql
 
-# Start MariaDB in the background
+mkdir -p /run/mysqld
+chown -R mysql:mysql /run/mysqld
+
 service mariadb start
 
 echo "Waiting for MariaDB to start..."
@@ -26,21 +27,19 @@ until mysqladmin ping --silent; do
 done
 echo "MariaDB is up!"
 
-# Secure MariaDB Setup
-# mysql -uroot -e "CREATE DATABASE IF NOT EXISTS \`$SQL_DATABASE\`;"
-# mysql -uroot -e "CREATE USER IF NOT EXISTS '$SQL_USER'@'%' IDENTIFIED BY '$SQL_PASSWORD';"
-# mysql -uroot -e "GRANT ALL PRIVILEGES ON \`$SQL_DATABASE\`.* TO '$SQL_USER'@'%';"
-# mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$SQL_ROOT_PASSWORD';"
-# mysql -uroot -e "FLUSH PRIVILEGES;"
-# mysqladmin -uroot -p"$SQL_ROOT_PASSWORD" shutdown
+# Create database and user
+mysql -uroot -e "CREATE DATABASE IF NOT EXISTS \`$SQL_DATABASE\`;"
+mysql -uroot -e "CREATE USER IF NOT EXISTS '$SQL_USER'@'%' IDENTIFIED BY '$SQL_PASSWORD';"
+mysql -uroot -e "GRANT ALL PRIVILEGES ON \`$SQL_DATABASE\`.* TO '$SQL_USER'@'%';"
 
+# Allow root access from any host
+mysql -uroot -e "CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
+mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
+mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
 
-mysql -e "CREATE DATABASE IF NOT EXISTS $SQl_DATABASE;"
-mysql -e "CREATE USER IF NOT EXISTS '$SQL_USER'@'%' IDENTIFIED BY '$SQL_PASSWORD';"
-mysql -e "GRANT ALL PRIVILEGES ON $SQl_DATABASE.* TO '$SQL_USER'@'%';"
-mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
-mysql -u root -p$SQL_ROOT_PASSWORD -e "FLUSH PRIVILEGES;"
-mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown
+# Flush privileges and restart
+mysql -uroot -p"$SQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
+mysqladmin -uroot -p"$SQL_ROOT_PASSWORD" shutdown
 
 echo "Starting MariaDB in the foreground..."
 exec mysqld_safe

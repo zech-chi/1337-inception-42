@@ -8,5 +8,7 @@ openssl req -x509 -nodes -newkey rsa:4096 -days 365 \
     -out /etc/nginx/ssl/server.crt \
     -subj "/C=MA/ST=Khouribga/L=Khouribga/O=1337 Coding School/OU=IT Department/CN=zech-chi.42.fr"
 
+chmod 777 /var/www/html
+
 echo "start nginx in the foreground ..."
 nginx -g "daemon off;"

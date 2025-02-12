@@ -4,11 +4,9 @@ mkdir -p /run/php/
 
 wget https://wordpress.org/latest.tar.gz -P /var/www/
 
-tar -xzf /var/www/latest.tar.gz -C /var/www/
+tar -xzf /var/www/latest.tar.gz -C /var/www/html/ --strip-components=1
 
-rm -rf  /var/www/latest.tar.gz
-
-mv -R /var/www/wordpress /var/www/html
+rm -rf /var/www/latest.tar.gz
 
 chown -R www-data:www-data /var/www/html
 
@@ -18,7 +16,9 @@ chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
 # sleep waiting fro mariadb
-sleep 20
+until mysqladmin -h mariadb -u root -p$SQL_ROOT_PASSWORD ping; do
+  sleep 2
+done
 				
 cd /var/www/html
 
@@ -28,11 +28,25 @@ wp config create --allow-root \
                  --dbpass="$SQL_PASSWORD" \
                  --dbhost="mariadb:3306"
 
+wp core install --allow-root \
+                --url="https://0.0.0.0:8080/" \
+                --title="Inception" \
+                --admin_user="$WP_ADMIN_LOGIN" \
+                --admin_password="$WP_ADMIN_PASSWORD" \
+                --admin_email="$WP_ADMIN_EMAIL"
+
+wp user create --allow-root "$WP_USER_LOGIN" "$WP_USER_EMAIL" \
+               --role=author \
+               --user_pass="$WP_USER_PASSWORD"
+
+
 # Fix PHP-FPM socket configuration
 sed -i 's|listen = /run/php/php7.4-fpm.sock|listen = 9000|' /etc/php/7.4/fpm/pool.d/www.conf
 
 # Set correct ownership again
 chown -R www-data:www-data /var/www/html
+
+chmod 777 /var/www/html
 
 echo "Starting WordPress in the foreground..."
 exec php-fpm7.4 -F
