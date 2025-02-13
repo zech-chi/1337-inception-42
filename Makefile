@@ -1,5 +1,5 @@
-WP_VOLUME_PATH = '/tmp/inception_volumes/wordpress_volume15'
-MARIADB_VOLUME_PATH = '/tmp/inception_volumes/mariadb_volume15'
+WP_VOLUME_PATH = '/tmp/inception_volumes/wordpress_volume3'
+MARIADB_VOLUME_PATH = '/tmp/inception_volumes/mariadb_volume3'
 
 
 all: up

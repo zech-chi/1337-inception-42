@@ -49,6 +49,15 @@ services:
     ports:
       - "8081:80"
 
+  adminer:
+    container_name: adminer
+    build: ./requirements/bonus/adminer
+    image: adminer:zech-chi
+    restart: always
+    ports:
+      - "8082:8080"
+    networks:
+      - inception_net
 
 networks:
   inception_net:
@@ -59,12 +68,12 @@ volumes:
   mariadb_db:
     driver: local
     driver_opts:
-        device: /tmp/inception_volumes/mariadb_volume15
+        device: /tmp/inception_volumes/mariadb_volume3
         type: none
         o: bind
   wordpress_volume:
     driver: local
     driver_opts: 
-      device: /tmp/inception_volumes/wordpress_volume15
+      device: /tmp/inception_volumes/wordpress_volume3
       type: none
       o: bind
