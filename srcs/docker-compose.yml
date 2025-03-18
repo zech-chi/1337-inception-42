@@ -68,12 +68,12 @@ volumes:
   mariadb_db:
     driver: local
     driver_opts:
-        device: /tmp/inception_volumes/mariadb_volume3
+        device: /tmp/inception_volumes/mariadb_volume6
         type: none
         o: bind
   wordpress_volume:
     driver: local
     driver_opts: 
-      device: /tmp/inception_volumes/wordpress_volume3
+      device: /tmp/inception_volumes/wordpress_volume6
       type: none
       o: bind

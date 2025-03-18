@@ -16,9 +16,7 @@ chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
 # sleep waiting fro mariadb
-until mysqladmin -h mariadb -u root -p$SQL_ROOT_PASSWORD ping; do
-  sleep 2
-done
+sleep 25
 				
 cd /var/www/html
 

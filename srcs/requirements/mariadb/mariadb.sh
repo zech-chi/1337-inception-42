@@ -22,9 +22,7 @@ chown -R mysql:mysql /run/mysqld
 service mariadb start
 
 echo "Waiting for MariaDB to start..."
-until mysqladmin ping --silent; do
-    sleep 2
-done
+sleep 10
 echo "MariaDB is up!"
 
 # Create database and user
