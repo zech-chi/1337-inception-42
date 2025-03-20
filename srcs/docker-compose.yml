@@ -40,6 +40,23 @@ services:
       - mariadb
     volumes:
       - wordpress_volume:/var/www/html
+
+  ftp:
+    container_name: ftp
+    build: ./requirements/bonus/ftp
+    image: ftp:zech-chi
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - '9090:21'
+      - '40000-40100:40000-40100'
+    networks:
+      - inception_net
+    # depends_on:
+    #   - wordpress
+    volumes:
+      - wordpress_volume:/home/zech/
     
   static_website:
     container_name: static_website
@@ -68,12 +85,12 @@ volumes:
   mariadb_db:
     driver: local
     driver_opts:
-        device: /tmp/inception_volumes/mariadb_volume14
+        device: /tmp/inception_volumes/mariadb_volume2
         type: none
         o: bind
   wordpress_volume:
     driver: local
     driver_opts: 
-      device: /tmp/inception_volumes/wordpress_volume14
+      device: /tmp/inception_volumes/wordpress_volume2
       type: none
       o: bind
