@@ -25,6 +25,8 @@ services:
       - inception_net
     # depends_on:
     #   - nginx
+    volumes:
+      - mariadb_db:/var/lib/mysql
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress
@@ -75,6 +77,30 @@ services:
       - "8082:8080"
     networks:
       - inception_net
+  mariadb_backup:
+    container_name: mariadb_backup
+    build: ./requirements/bonus/mariadb_backup
+    image: mariadb_backup:zech-chi
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - inception_net
+    # depends_on:
+    #   - nginx
+    # volumes:
+    #   - mariadb_db:/var/lib/mysql
+  redis:
+    container_name: redis
+    build: ./requirements/bonus/redis
+    image: redis:zech-chi
+    restart: always
+    ports:
+      - "50000:6379"
+    networks:
+      - inception_net
+    volumes:
+      - wordpress_volume:/var/www/html
 
 networks:
   inception_net:
@@ -86,6 +112,12 @@ volumes:
     driver: local
     driver_opts:
         device: /tmp/inception_volumes/mariadb_volume2
+        type: none
+        o: bind
+  mariadb_db_backup:
+    driver: local
+    driver_opts:
+        device: /tmp/inception_volumes/mariadb_backup_volume2
         type: none
         o: bind
   wordpress_volume:

@@ -38,6 +38,13 @@ wp user create --allow-root "$WP_USER_LOGIN" "$WP_USER_EMAIL" \
                --user_pass="$WP_USER_PASSWORD"
 
 
+# for redis cache
+wp plugin install redis-cache --allow-root
+wp plugin activate redis-cache --allow-root
+wp redis enable --allow-root
+wp config set WP_REDIS_HOST redis --allow-root
+wp config set WP_REDIS_PORT 6379 --allow-root
+
 # Fix PHP-FPM socket configuration
 sed -i 's|listen = /run/php/php7.4-fpm.sock|listen = 9000|' /etc/php/7.4/fpm/pool.d/www.conf
 

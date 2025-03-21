@@ -1,6 +1,6 @@
 WP_VOLUME_PATH = '/tmp/inception_volumes/wordpress_volume2'
 MARIADB_VOLUME_PATH = '/tmp/inception_volumes/mariadb_volume2'
-
+MARIADB_BACKUP_VOLUME_PATH = /tmp/inception_volumes/mariadb_backup_volume2
 
 all: up
 
@@ -10,6 +10,7 @@ up:
 	# @rm -rf ${MARIADB_VOLUME_PATH}
 	@mkdir -p ${WP_VOLUME_PATH}
 	@mkdir -p ${MARIADB_VOLUME_PATH}
+	@mkdir -p ${MARIADB_BACKUP_VOLUME_PATH}
 	@docker-compose -f srcs/docker-compose.yml up --build 
 
 start:

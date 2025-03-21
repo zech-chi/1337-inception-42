@@ -2,16 +2,19 @@
 
 echo "Start MariaDB service"
 
-if [ -z "$SQL_DATABASE" ] || [ -z "$SQL_USER" ] || [ -z "$SQL_PASSWORD" ] || [ -z "$SQL_ROOT" ] || [ -z "$SQL_ROOT_PASSWORD" ]; then
-    echo "Error: Required environment variables are missing!"
-    exit 1
-fi
+# required_vars=(
+#   "SQL_DATABASE"
+#   "SQL_USER"
+#   "SQL_PASSWORD"
+#   "SQL_ROOT_PASSWORD"
+# )
 
-echo "Database      : $SQL_DATABASE"
-echo "User          : $SQL_USER"
-echo "Password      : $SQL_PASSWORD"
-echo "Root User     : $SQL_ROOT"
-echo "Root Password : $SQL_ROOT_PASSWORD"
+# for var in "${required_vars[@]}"; do
+#   if [ -z "${!var}" ]; then
+#     echo "Error: $var is not set!"
+#     exit 1
+#   fi
+# done
 
 chown -R mysql:mysql /var/lib/mysql
 chmod 755 /var/lib/mysql
@@ -29,6 +32,9 @@ echo "MariaDB is up!"
 mysql -uroot -e "CREATE DATABASE IF NOT EXISTS \`$SQL_DATABASE\`;"
 mysql -uroot -e "CREATE USER IF NOT EXISTS '$SQL_USER'@'%' IDENTIFIED BY '$SQL_PASSWORD';"
 mysql -uroot -e "GRANT ALL PRIVILEGES ON \`$SQL_DATABASE\`.* TO '$SQL_USER'@'%';"
+
+# for mariadb_backup
+mysql -uroot -e "GRANT RELOAD, PROCESS ON *.* TO '$SQL_USER'@'%';"
 
 # Allow root access from any host
 mysql -uroot -e "CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
