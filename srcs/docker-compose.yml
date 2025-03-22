@@ -25,6 +25,10 @@ services:
       - inception_net
     volumes:
       - mariadb_db:/var/lib/mysql
+    secrets:
+      - db_password
+      - db_root_password
+
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress
@@ -40,6 +44,10 @@ services:
       - mariadb
     volumes:
       - wordpress_volume:/var/www/html
+    secrets:
+      - wp_admin_password
+      - wp_user_password
+      - db_password
 
   ftp:
     container_name: ftp
@@ -127,3 +135,11 @@ volumes:
 secrets:
   ftp_password:
     file: ../secrets/ftp_password.txt
+  db_password:
+    file: ../secrets/db_password.txt
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  wp_admin_password:
+    file: ../secrets/db_password.txt
+  wp_user_password:
+    file: ../secrets/db_password.txt
