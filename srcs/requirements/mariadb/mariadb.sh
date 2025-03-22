@@ -17,7 +17,7 @@ echo "MariaDB is up!"
 DB_PASSWORD="$(cat /run/secrets/db_password)"
 echo "--->db_password $DB_PASSWORD"
 DB_ROOT_PASSWORD="$(cat /run/secrets/db_root_password)"
-echo "--->db_password $DB_ROOT_PASSWORD"
+echo "--->db_root_password $DB_ROOT_PASSWORD"
 
 mysql -uroot -e "CREATE DATABASE IF NOT EXISTS \`$SQL_DATABASE\`;"
 mysql -uroot -e "CREATE USER IF NOT EXISTS '$SQL_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';"

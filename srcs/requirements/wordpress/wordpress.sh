@@ -20,10 +20,18 @@ sleep 25
 				
 cd /var/www/html
 
+DB_PASSWORD="$(cat /run/secrets/db_password)"
+echo "--->db_password $DB_PASSWORD"
+WP_ADMIN_PASSWORD="$(cat /run/secrets/wp_admin_password)"
+echo "--->wp_admin_password $WP_ADMIN_PASSWORD"
+WP_USER_PASSWORD="$(cat /run/secrets/wp_user_password)"
+echo "--->wp_user_password $WP_USER_PASSWORD"
+
+
 wp config create --allow-root \
                  --dbname="$SQL_DATABASE" \
                  --dbuser="$SQL_USER" \
-                 --dbpass="$SQL_PASSWORD" \
+                 --dbpass="$DB_PASSWORD" \
                  --dbhost="mariadb:3306"
 
 wp core install --allow-root \
@@ -40,10 +48,10 @@ wp user create --allow-root "$WP_USER_LOGIN" "$WP_USER_EMAIL" \
 
 # for redis cache
 wp plugin install redis-cache --allow-root
-wp plugin activate redis-cache --allow-root
-wp redis enable --allow-root
 wp config set WP_REDIS_HOST redis --allow-root
 wp config set WP_REDIS_PORT 6379 --allow-root
+wp plugin activate redis-cache --allow-root
+wp redis enable --allow-root
 
 # Fix PHP-FPM socket configuration
 sed -i 's|listen = /run/php/php7.4-fpm.sock|listen = 9000|' /etc/php/7.4/fpm/pool.d/www.conf
