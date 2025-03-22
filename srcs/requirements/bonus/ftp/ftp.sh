@@ -1,7 +1,9 @@
 #!/bin/sh
 
-useradd -m zech
-echo "zech:zechpass" | chpasswd
+useradd -m "$FTP_USER"
+
+FTP_PASS="$(cat /run/secrets/ftp_password)"
+echo "$FTP_USER:$FTP_PASS" | chpasswd
 
 # Create the required directory for secure_chroot_dir
 mkdir -p /var/run/vsftpd/empty

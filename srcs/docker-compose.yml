@@ -54,8 +54,10 @@ services:
     networks:
       - inception_net
     volumes:
-      - wordpress_volume:/home/zech/
-    
+      - wordpress_volume:/home/zech-chi
+    secrets:
+      - ftp_password
+
   static_website:
     container_name: static_website
     build: ./requirements/bonus/static_website
@@ -120,3 +122,8 @@ volumes:
       device: /tmp/inception_volumes/wordpress_volume2
       type: none
       o: bind
+
+
+secrets:
+  ftp_password:
+    file: ../secrets/ftp_password.txt
