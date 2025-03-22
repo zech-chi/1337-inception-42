@@ -21,12 +21,8 @@ sleep 25
 cd /var/www/html
 
 DB_PASSWORD="$(cat /run/secrets/db_password)"
-echo "--->db_password $DB_PASSWORD"
 WP_ADMIN_PASSWORD="$(cat /run/secrets/wp_admin_password)"
-echo "--->wp_admin_password $WP_ADMIN_PASSWORD"
 WP_USER_PASSWORD="$(cat /run/secrets/wp_user_password)"
-echo "--->wp_user_password $WP_USER_PASSWORD"
-
 
 wp config create --allow-root \
                  --dbname="$SQL_DATABASE" \
