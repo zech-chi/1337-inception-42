@@ -77,19 +77,6 @@ services:
       - "8082:8080"
     networks:
       - inception_net
-  mariadb_backup:
-    container_name: mariadb_backup
-    build: ./requirements/bonus/mariadb_backup
-    image: mariadb_backup:zech-chi
-    restart: always
-    env_file:
-      - .env
-    networks:
-      - inception_net
-    # depends_on:
-    #   - nginx
-    # volumes:
-    #   - mariadb_db:/var/lib/mysql
   redis:
     container_name: redis
     build: ./requirements/bonus/redis
@@ -102,6 +89,21 @@ services:
     volumes:
       - wordpress_volume:/var/www/html
 
+  cadvisor:
+    container_name: cadvisor
+    build: ./requirements/bonus/cadvisor
+    image: cadvisor:zech-chi
+    restart: always
+    ports:
+      - "8083:8080"
+    networks:
+      - inception_net
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+
 networks:
   inception_net:
     driver: bridge
@@ -112,12 +114,6 @@ volumes:
     driver: local
     driver_opts:
         device: /tmp/inception_volumes/mariadb_volume2
-        type: none
-        o: bind
-  mariadb_db_backup:
-    driver: local
-    driver_opts:
-        device: /tmp/inception_volumes/mariadb_backup_volume2
         type: none
         o: bind
   wordpress_volume:
