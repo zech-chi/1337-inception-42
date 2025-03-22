@@ -1,6 +1,6 @@
 FROM debian:bullseye
 
-RUN apt -y update  && apt install -y vsftpd
+RUN apt -y update && apt install -y vsftpd
 
 COPY vsftpd.conf /etc/vsftpd.conf
 

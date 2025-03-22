@@ -1,6 +1,6 @@
 FROM debian:bullseye
 
-RUN apt -y update && apt dist-upgrade -y && apt install -y curl php php-mysql
+RUN apt -y update && apt install -y curl php php-mysql
 
 COPY adminer.sh /adminer.sh
 

@@ -23,8 +23,6 @@ services:
       - .env
     networks:
       - inception_net
-    # depends_on:
-    #   - nginx
     volumes:
       - mariadb_db:/var/lib/mysql
   wordpress:
@@ -55,8 +53,6 @@ services:
       - '40000-40100:40000-40100'
     networks:
       - inception_net
-    # depends_on:
-    #   - wordpress
     volumes:
       - wordpress_volume:/home/zech/
     
@@ -104,9 +100,11 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
 
+
 networks:
   inception_net:
     driver: bridge
+
 
 
 volumes:
