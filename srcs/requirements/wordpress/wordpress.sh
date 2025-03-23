@@ -31,7 +31,7 @@ wp config create --allow-root \
                  --dbhost="mariadb:3306"
 
 wp core install --allow-root \
-                --url="https://zech-chi.42.fr" \
+                --url="https://$DOMAIN_NAME" \
                 --title="Inception" \
                 --admin_user="$WP_ADMIN_LOGIN" \
                 --admin_password="$WP_ADMIN_PASSWORD" \
@@ -42,8 +42,8 @@ wp user create --allow-root "$WP_USER_LOGIN" "$WP_USER_EMAIL" \
                --user_pass="$WP_USER_PASSWORD"
 
 
-wp option update home 'https://zech-chi.42.fr' --allow-root
-wp option update siteurl 'https://zech-chi.42.fr' --allow-root
+wp option update home "https://$DOMAIN_NAME" --allow-root
+wp option update siteurl "https://$DOMAIN_NAME" --allow-root
 wp theme activate twentytwentyfour --allow-root
 
 # for redis cache
