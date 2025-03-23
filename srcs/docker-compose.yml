@@ -121,13 +121,13 @@ volumes:
   mariadb_db:
     driver: local
     driver_opts:
-        device: /tmp/inception_volumes/mariadb_volume2
+        device:  /home/zech-chi/data/mariadb_volume
         type: none
         o: bind
   wordpress_volume:
     driver: local
     driver_opts: 
-      device: /tmp/inception_volumes/wordpress_volume2
+      device:  /home/zech-chi/data/wordpress_volume
       type: none
       o: bind
 
