@@ -1,6 +1,6 @@
 FROM debian:bullseye
 
-RUN apt -y update && apt dist-upgrade -y && apt install -y nginx
+RUN apt -y update && apt install -y nginx
 
 COPY index.html /var/www/html
 
