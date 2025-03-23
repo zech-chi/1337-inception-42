@@ -7,6 +7,7 @@
     --window-color2: #777;
     --window-color3: #777;
     --window-color4: #777;
+    --yellow-color: #FFEB3B;
 }
 
 * {
@@ -49,6 +50,31 @@ body {
             #445 21%,
             #223 100%
         );
+}
+
+.text-overlay {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%);
+    text-align: center;
+    color: var(--yellow-color);
+    font-family: Arial, sans-serif;
+    z-index: 10;
+}
+
+.text1, .text2 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--yellow-color);
+}
+
+.text1 {
+    margin-bottom: 10px;
+}
+
+.text2 {
+    font-size: 2rem;
 }
 
 /* BACKGROUND BUILDINGS - "bb" stands for "background building" */
