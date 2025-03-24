@@ -1,6 +1,17 @@
+# These settings are for the MySQL server daemon
 [mysqld]
+
+# The port on which the MySQL server listens for connections
 port = 3306
+
+# Allows connections from any IP address
 bind_address = *
+
+# Path to the Unix socket for local connections
 socket = /run/mysqld/mysqld.sock
+
+# Directory where MySQL stores its data
 datadir = /var/lib/mysql
+
+# The user under which the MySQL server runs (default is 'mysql')
 user = mysql
