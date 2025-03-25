@@ -113,13 +113,29 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
 
+# Uses read-only (:ro) bind mounts to access Docker system information.
+# - /:/rootfs:ro  ---->  access to the entire host filesystem. Helps in monitoring disk usage.
+# - /var/run:/var/run:ro  ---> access to Docker socket files for container information.
+# - /sys:/sys:ro  ---> access to system metrics like CPU, memory and network usage.
+# - /var/lib/docker/:/var/lib/docker:ro  ---> get detailed information about running Docker containers.
 
+
+# - bridge network is the default networking mode in Docker.
+# - allows multiple containers to communicate with each other.
+# - isolating them from the host network.
+# - the host machine can only access services that expose ports
+# - container can communicate using there names
 networks:
   inception_net:
     driver: bridge
 
 
 
+# - Volumes in Docker allow data to persist even if a container is stopped, removed, or restarted.
+# - driver: local ---> use local storage driver.
+# - device ----> path on the host.
+# - type: none ---> telling the docker this is a path of a directoy not a device.
+# - o: bind ----> bind mount (both container and the host can change that volume).
 volumes:
   mariadb_db:
     driver: local
